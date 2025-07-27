@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VividGen: Hyperrealistic Scenes - Exclusively on El Patronhub</title>
+    <title>VividGen: Hyperrealistic Scenes - Unleash Your Imagination</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
@@ -23,7 +23,7 @@
         }
         .section-heading {
             color: #a0aec0; /* Lighter grey for section titles */
-            font-weight: 7            00;
+            font-weight: 700;
             margin-bottom: 1.5rem;
             text-align: center;
         }
@@ -162,11 +162,9 @@
                 Tired of <span class="gradient-text">Unrealistic AI Images</span>?
             </h1>
             <p class="text-xl md:text-2xl text-indigo-200 mb-8 max-w-3xl mx-auto">
-                Discover the future of AI artistry.
+                Unleash your imagination and craft stunning, hyper-realistic scenes with unprecedented control.
             </p>
-            <div class="inline-block px-6 py-3 bg-white text-indigo-800 font-bold rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105">
-                Launching Exclusively on El Patronhub!
-            </div>
+            <!-- Removed: Launching Exclusively on El Patronhub! -->
         </section>
 
         <!-- Product Introduction (Moved to the beginning) -->
@@ -237,6 +235,32 @@
 
     </div>
 
+    <!-- Initial Desktop Reminder Modal -->
+    <div id="desktopReminderModal" class="modal-overlay show">
+        <div class="modal-content">
+            <h2 class="text-3xl font-bold text-center gradient-text mb-6">Big Reminder: Desktop Use Only!</h2>
+            <div class="mb-8 p-4 bg-yellow-800 bg-opacity-30 border border-yellow-600 rounded-lg text-yellow-200">
+                <h3 class="text-xl font-semibold mb-2 flex items-center">
+                    <svg class="icon-x mr-2" viewBox="0 0 24 24">
+                        <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+                    </svg>
+                    Important: Desktop Use Recommended
+                </h3>
+                <p class="text-lg">
+                    For the best performance, optimal results, and full functionality, VividGen is
+                    <strong class="text-white">intended for desktop use only. Mobile usage is not recommended</strong>
+                    and may result in a degraded experience.
+                </p>
+            </div>
+            <div class="text-center">
+                <button id="gotItButton" class="btn-primary">
+                    Got It!
+                </button>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Terms and Conditions Modal -->
     <div id="termsModal" class="modal-overlay">
         <div class="modal-content">
@@ -281,7 +305,7 @@
                 </ul>
             </div>
 
-            <!-- New additions to the modal -->
+            <!-- Important Usage Restriction: No Image Uploads or Swaps -->
             <div class="mb-8 p-4 bg-red-800 bg-opacity-30 border border-red-600 rounded-lg text-red-200">
                 <h3 class="text-xl font-semibold mb-2 flex items-center">
                     <svg class="icon-x mr-2" viewBox="0 0 24 24">
@@ -293,20 +317,6 @@
                     Please note: VividGen is designed for generating new scenes from text descriptions.
                     <strong class="text-white">You cannot upload your own photos or perform head replacements.</strong>
                     Attempting to do so will result in inconsistencies and is against our usage guidelines.
-                </p>
-            </div>
-
-            <div class="mb-8 p-4 bg-yellow-800 bg-opacity-30 border border-yellow-600 rounded-lg text-yellow-200">
-                <h3 class="text-xl font-semibold mb-2 flex items-center">
-                    <svg class="icon-x mr-2" viewBox="0 0 24 24">
-                        <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
-                    </svg>
-                    Big Reminder: Desktop Use Only!
-                </h3>
-                <p class="text-lg">
-                    For the best performance, optimal results, and full functionality, VividGen is
-                    <strong class="text-white">intended for desktop use only. Mobile usage is not recommended</strong>
-                    and may result in a degraded experience.
                 </p>
             </div>
 
@@ -324,25 +334,49 @@
         const closeModalBtn = document.getElementById('closeModalBtn');
         const acceptTermsButton = document.getElementById('acceptTermsButton');
 
+        const desktopReminderModal = document.getElementById('desktopReminderModal');
+        const gotItButton = document.getElementById('gotItButton');
+
         const appUrl = "https://vividgen-hyperrealistic-scenes-766567697287.us-west1.run.app/";
 
-        // Event listener to open the modal
+        // Function to show a modal
+        function showModal(modalElement) {
+            modalElement.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling on the body
+        }
+
+        // Function to hide a modal
+        function hideModal(modalElement) {
+            modalElement.classList.remove('show');
+            // Only restore scrolling if no other modals are open
+            if (!termsModal.classList.contains('show') && !desktopReminderModal.classList.contains('show')) {
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Show desktop reminder modal on page load
+        window.addEventListener('load', () => {
+            showModal(desktopReminderModal);
+        });
+
+        // Event listener for "Got It!" button in desktop reminder modal
+        gotItButton.addEventListener('click', () => {
+            hideModal(desktopReminderModal);
+        });
+
+        // Event listener to open the main terms modal
         openTermsModalButton.addEventListener('click', () => {
-            termsModal.classList.add('show');
-            // Prevent scrolling on the body when modal is open
-            document.body.style.overflow = 'hidden';
+            showModal(termsModal);
         });
 
-        // Event listener to close the modal
+        // Event listener to close the main terms modal
         closeModalBtn.addEventListener('click', () => {
-            termsModal.classList.remove('show');
-            document.body.style.overflow = ''; // Restore scrolling
+            hideModal(termsModal);
         });
 
-        // Event listener for the "Accept" button in the modal
+        // Event listener for the "Accept" button in the terms modal
         acceptTermsButton.addEventListener('click', () => {
-            termsModal.classList.remove('show');
-            document.body.style.overflow = ''; // Restore scrolling
+            hideModal(termsModal);
             // Redirect to the app URL after acceptance
             window.open(appUrl, '_blank');
         });
@@ -350,8 +384,13 @@
         // Optional: Close modal if clicking outside the content (but not on the content itself)
         termsModal.addEventListener('click', (event) => {
             if (event.target === termsModal) {
-                termsModal.classList.remove('show');
-                document.body.style.overflow = ''; // Restore scrolling
+                hideModal(termsModal);
+            }
+        });
+
+        desktopReminderModal.addEventListener('click', (event) => {
+            if (event.target === desktopReminderModal) {
+                hideModal(desktopReminderModal);
             }
         });
     </script>
